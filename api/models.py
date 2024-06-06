@@ -35,6 +35,17 @@ class Customer(models.Model):
 
     is_active=models.BooleanField(default=True)
 
+    @property
+    def work_count(self):
+
+        #return self.Work_set.all().count()
+
+        return Work.objects.filter(customer=self).count()
+    
+    def work_total(self):
+
+        return Work.objects.filter(customer=self).values("amount").aggregate(total=Sum("amount"))["total"]
+
     def __str__(self) -> str:
 
         return self.name
